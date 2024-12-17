@@ -1,9 +1,12 @@
 module github.com/obynonwane/blockchain_project
 
-go 1.21.0
+go 1.22.0
+
+toolchain go1.22.10
 
 require (
 	github.com/stretchr/testify v1.10.0
+	golang.org/x/exp v0.0.0-20241215155358-4a5509556b9e
 	google.golang.org/protobuf v1.36.0
 )
 
