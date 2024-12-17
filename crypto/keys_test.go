@@ -34,7 +34,7 @@ func TestPrivateKeySign(t *testing.T) {
 }
 
 func TestPublicKeyToAddress(t *testing.T) {
-	privKey := GeneratePrivateKey() // generate private key
+	privKey := GeneratePrivateKey() // generate private key from seed
 	pubKey := privKey.Public()      // generate public key from private key
 	address := pubKey.Address()     // generates address from public key
 
