@@ -2,7 +2,10 @@ module github.com/obynonwane/blockchain_project
 
 go 1.21.0
 
-require github.com/stretchr/testify v1.10.0
+require (
+	github.com/stretchr/testify v1.10.0
+	google.golang.org/protobuf v1.36.0
+)
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
