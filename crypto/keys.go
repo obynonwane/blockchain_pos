@@ -11,6 +11,7 @@ const (
 	privKeyLen = 64 // private key & public key 32 each, public key attached to private key
 	pubKeyLen  = 32
 	seedLen    = 32
+	addressLen = 20
 )
 
 type PrivateKey struct {
@@ -65,6 +66,14 @@ type PublicKey struct {
 	key ed25519.PublicKey
 }
 
+// returns a reference to the address struct
+func (p *PublicKey) Address() Address {
+	// extracts the last 20 bytes of the publick key and returns it
+	return Address{
+		value: p.key[len(p.key)-addressLen:],
+	}
+}
+
 type Signature struct {
 	value []byte
 }
@@ -79,10 +88,17 @@ func (s *Signature) Verify(pubKey *PublicKey, msg []byte) bool {
 	return ed25519.Verify(pubKey.key, msg, s.value)
 }
 
+// address struct
 type Address struct {
 	value []byte
 }
 
-func (a *Address) String() string {
+// returns the address as bytes from the struct
+func (a Address) Bytes() []byte {
+	return a.value
+}
+
+// returns the address as a string after converting bytes to string
+func (a Address) String() string {
 	return hex.EncodeToString(a.value)
 }
