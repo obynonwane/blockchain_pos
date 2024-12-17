@@ -3,6 +3,7 @@ package crypto
 import (
 	"crypto/ed25519"
 	"crypto/rand"
+	"encoding/hex"
 	"io"
 )
 
@@ -35,8 +36,10 @@ func (p *PrivateKey) Bytes() []byte {
 }
 
 // signs transaction
-func (p *PrivateKey) Sign(msg []byte) []byte {
-	return ed25519.Sign(p.key, msg)
+func (p *PrivateKey) Sign(msg []byte) *Signature {
+	return &Signature{
+		value: ed25519.Sign(p.key, msg),
+	}
 }
 
 // generate public key from private key
@@ -60,4 +63,26 @@ func (p *PublicKey) Bytes() []byte {
 
 type PublicKey struct {
 	key ed25519.PublicKey
+}
+
+type Signature struct {
+	value []byte
+}
+
+// return signature bytes
+func (s *Signature) Bytes() []byte {
+	return s.value
+}
+
+// verify if signature is valid of a message
+func (s *Signature) Verify(pubKey *PublicKey, msg []byte) bool {
+	return ed25519.Verify(pubKey.key, msg, s.value)
+}
+
+type Address struct {
+	value []byte
+}
+
+func (a *Address) String() string {
+	return hex.EncodeToString(a.value)
 }
