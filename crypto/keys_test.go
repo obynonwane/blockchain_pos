@@ -16,6 +16,23 @@ func TestGeneratePrivateKey(t *testing.T) {
 	assert.Equal(t, len(pubKey.Bytes()), pubKeyLen)
 }
 
+func TestNewPrivateKeyfromString(t *testing.T) {
+	// seed := make([]byte, 32)
+	// io.ReadFull(rand.Reader, seed)
+	// fmt.Println(hex.EncodeToString(seed))
+
+	var (
+		seed       = "e2cfe6e22dea6dbbd7c2ca84e4798b8f7f5bfe3bacc68a90805a805858e8f63f"
+		privKey    = NewPrivateKeyfromString(seed)
+		addressStr = "22de4300626fb92ae5f5eafa67b8ad59b83fc64d"
+	)
+
+	assert.Equal(t, privKeyLen, len(privKey.Bytes()))
+	address := privKey.Public().Address()
+	assert.Equal(t, addressStr, address.String())
+
+}
+
 func TestPrivateKeySign(t *testing.T) {
 	privKey := GeneratePrivateKey()
 	pubKey := privKey.Public()
