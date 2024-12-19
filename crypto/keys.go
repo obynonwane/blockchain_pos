@@ -8,10 +8,11 @@ import (
 )
 
 const (
-	privKeyLen = 64 // private key & public key 32 each, public key attached to private key
-	pubKeyLen  = 32
-	seedLen    = 32
-	addressLen = 20
+	privKeyLen   = 64 // private key & public key 32 each, public key attached to private key
+	signatureLen = 64
+	pubKeyLen    = 32
+	seedLen      = 32
+	addressLen   = 20
 )
 
 type PrivateKey struct {
@@ -86,6 +87,16 @@ type PublicKey struct {
 	key ed25519.PublicKey
 }
 
+// get the public ket from supplied bytes
+func PublicKeyFromBytes(b []byte) *PublicKey {
+	if len(b) != pubKeyLen {
+		panic("invalid public key length")
+	}
+	return &PublicKey{
+		key: ed25519.PublicKey(b),
+	}
+}
+
 // returns a reference to the address struct
 func (p *PublicKey) Address() Address {
 	// extracts the last 20 bytes of the publick key and returns it
@@ -96,6 +107,16 @@ func (p *PublicKey) Address() Address {
 
 type Signature struct {
 	value []byte
+}
+
+func SignatureFromBytes(b []byte) *Signature {
+	if len(b) != signatureLen {
+		panic("length of the byte not equal to 64")
+	}
+
+	return &Signature{
+		value: b,
+	}
 }
 
 // return signature bytes

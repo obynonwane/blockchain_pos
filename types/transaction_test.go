@@ -1,11 +1,13 @@
 package types
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/obynonwane/blockchain_project/crypto"
 	"github.com/obynonwane/blockchain_project/proto"
 	"github.com/obynonwane/blockchain_project/util"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestNewTransaction(t *testing.T) {
@@ -43,5 +45,12 @@ func TestNewTransaction(t *testing.T) {
 		Inputs:  []*proto.TxInput{input},
 		Outputs: []*proto.TxOutput{output1, output2},
 	}
+
+	sig := SignTransaction(fromPrivKey, tx)
+
+	input.Signature = sig.Bytes()
+
+	assert.True(t, VerifyTransaction(tx))
+	fmt.Printf("%+v\n", tx)
 
 }
